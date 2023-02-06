@@ -88,8 +88,8 @@ if(preg_match_all("/^(list_users)$/ui", $_GET['type'])){
     exit();
 }
 
-if(preg_match_all("/^(list_cart)$/ui", $_GET['type'])){
-    $query = "SELECT `id`, `user_id`, `product_id`, `date_of_append`, `del` FROM `cart`";
+if(preg_match_all("/^(list_uslugy)$/ui", $_GET['type'])){
+    $query = "SELECT `id`, `name`, `price`, `desc` FROM `uslugy`";
     $res_query = mysqli_query($connection, $query);
 
     if(!$res_query){
@@ -114,7 +114,7 @@ if(preg_match_all("/^(list_cart)$/ui", $_GET['type'])){
     
     echo ajax_echo(
         "Список корзин", // Заголовок ответа
-        "Вывод списка корзин", // Описание ответа
+        "Вывод списка услуг", // Описание ответа
         false, // Наличие ошибка
         "SUCCESS", // Результат ответа
         $arr_list // Дополнительные данные для ответа
@@ -158,8 +158,8 @@ if(preg_match_all("/^(list_comments)$/ui", $_GET['type'])){
     exit();
 }
 
-if(preg_match_all("/^(list_order)$/ui", $_GET['type'])){
-    $query = "SELECT `id`, `user_id`, `cart_id`, `price`, `date_of_append`, `del` FROM `order`";
+if(preg_match_all("/^(list_tools)$/ui", $_GET['type'])){
+    $query = "SELECT `id`, `name`, `count` FROM `tools`";
     $res_query = mysqli_query($connection, $query);
 
     if(!$res_query){
@@ -184,7 +184,7 @@ if(preg_match_all("/^(list_order)$/ui", $_GET['type'])){
     
     echo ajax_echo(
         "Список заказов", // Заголовок ответа
-        "Вывод списка заказов", // Описание ответа
+        "Вывод списка инструментов", // Описание ответа
         false, // Наличие ошибка
         "SUCCESS", // Результат ответа
         $arr_list // Дополнительные данные для ответа
@@ -323,39 +323,30 @@ else if(preg_match_all("/^(add_user)$/ui", $_GET['type'])){
     exit();
 }
 
-else if(preg_match_all("/^(add_order)$/ui", $_GET['type'])){
-    if(!isset($_GET['user_id'])) {
+else if(preg_match_all("/^(add_tools)$/ui", $_GET['type'])){
+    if(!isset($_GET['name'])) {
         echo ajax_echo(
             "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр user_id", // Описание ответа
+            "Вы не указали GET параметр name", // Описание ответа
             true, // Наличие ошибка
             "ERROR", // Результат ответа
             null // Дополнительные данные для ответа
         );
         exit();
     }
-    if(!isset($_GET['cart_id'])) {
+    if(!isset($_GET['count'])) {
         echo ajax_echo(
             "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр cart_id", // Описание ответа
+            "Вы не указали GET параметр count", // Описание ответа
             true, // Наличие ошибка
             "ERROR", // Результат ответа
             null // Дополнительные данные для ответа
         );
         exit();
     }
-    if(!isset($_GET['price'])) {
-        echo ajax_echo(
-            "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр price", // Описание ответа
-            true, // Наличие ошибка
-            "ERROR", // Результат ответа
-            null // Дополнительные данные для ответа
-        );
-        exit();
-    }
+    
 
-    $query = "INSERT INTO `order`(`user_id`, `cart_id`, `price`) VALUES ('" . $_GET['user_id'] . "', '". $_GET['cart_id'] ."', '". $_GET['price'] ."')";
+    $query = "INSERT INTO `tools`(`name`, `count`) VALUES ('" . $_GET['name'] . "', '". $_GET['count'] ."')";
     $res_query = mysqli_query($connection, $query);
 
     if(!$res_query){
@@ -371,7 +362,7 @@ else if(preg_match_all("/^(add_order)$/ui", $_GET['type'])){
 
     echo ajax_echo(
         "Успех", // Заголовок ответа
-        "Новый заказ был добавлен в базу данных", // Описание ответа
+        "Новый инструмент был добавлен в базу данных", // Описание ответа
         false, // Наличие ошибка
         "SUCCESS", // Результат ответа
         null // Дополнительные данные для ответа
@@ -444,21 +435,66 @@ else if(preg_match_all("/^(upd_product)$/ui", $_GET['type'])){
     exit();
 }
 
-else if(preg_match_all("/^(upd_order)$/ui", $_GET['type'])){
-    if(!isset($_GET['user_id'])) {
+else if(preg_match_all("/^(upd_tools)$/ui", $_GET['type'])){
+    if(!isset($_GET['name'])) {
         echo ajax_echo(
             "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр user_id", // Описание ответа
+            "Вы не указали GET параметр name", // Описание ответа
             true, // Наличие ошибка
             "ERROR", // Результат ответа
             null // Дополнительные данные для ответа
         );
         exit();
     }
-    if(!isset($_GET['cart_id'])) {
+    if(!isset($_GET['count'])) {
         echo ajax_echo(
             "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр cart_id", // Описание ответа
+            "Вы не указали GET параметр count", // Описание ответа
+            true, // Наличие ошибка
+            "ERROR", // Результат ответа
+            null // Дополнительные данные для ответа
+        );
+        exit();
+    }
+        if(!isset($_GET['id'])) {
+            echo ajax_echo(
+                "Ошибка!", // Заголовок ответа
+                "Вы не указали GET параметр id", // Описание ответа
+                true, // Наличие ошибка
+                "ERROR", // Результат ответа
+                null // Дополнительные данные для ответа
+        );
+        exit();
+    }
+    $query = "UPDATE `tools` SET `name` = '". $_GET['name'] ."', `count` = '". $_GET['count'] ."' WHERE `id` = '". $_GET['id'] ."'";
+    $res_query = mysqli_query($connection, $query);
+
+    if(!$res_query){
+        echo ajax_echo(
+            "Ошибка!", // Заголовок ответа
+            "Ошибка в запросе.", // Описание ответа
+            true, // Наличие ошибка
+            "ERROR", // Результат ответа
+            null // Дополнительные данные для ответа
+        );
+        exit();
+    }
+
+    echo ajax_echo(
+        "Успех", // Заголовок ответа
+        "Обновление списка инструментов прошло успешно", // Описание ответа
+        false, // Наличие ошибка
+        "SUCCESS", // Результат ответа
+        null // Дополнительные данные для ответа
+    );
+    exit();
+}
+
+else if(preg_match_all("/^(upd_uslugy)$/ui", $_GET['type'])){
+    if(!isset($_GET['name'])) {
+        echo ajax_echo(
+            "Ошибка!", // Заголовок ответа
+            "Вы не указали GET параметр name", // Описание ответа
             true, // Наличие ошибка
             "ERROR", // Результат ответа
             null // Дополнительные данные для ответа
@@ -475,55 +511,10 @@ else if(preg_match_all("/^(upd_order)$/ui", $_GET['type'])){
         );
         exit();
     }
-        if(!isset($_GET['id'])) {
-            echo ajax_echo(
-                "Ошибка!", // Заголовок ответа
-                "Вы не указали GET параметр id", // Описание ответа
-                true, // Наличие ошибка
-                "ERROR", // Результат ответа
-                null // Дополнительные данные для ответа
-        );
-        exit();
-    }
-    $query = "UPDATE `order` SET `user_id` = '". $_GET['user_id'] ."', `cart_id` = '". $_GET['cart_id'] ."', `price` = '". $_GET['price'] ."' WHERE `id` = '". $_GET['id'] ."'";
-    $res_query = mysqli_query($connection, $query);
-
-    if(!$res_query){
+    if(!isset($_GET['desc'])) {
         echo ajax_echo(
             "Ошибка!", // Заголовок ответа
-            "Ошибка в запросе.", // Описание ответа
-            true, // Наличие ошибка
-            "ERROR", // Результат ответа
-            null // Дополнительные данные для ответа
-        );
-        exit();
-    }
-
-    echo ajax_echo(
-        "Успех", // Заголовок ответа
-        "Обновление заказа прошло успешно", // Описание ответа
-        false, // Наличие ошибка
-        "SUCCESS", // Результат ответа
-        null // Дополнительные данные для ответа
-    );
-    exit();
-}
-
-else if(preg_match_all("/^(upd_cart)$/ui", $_GET['type'])){
-    if(!isset($_GET['user_id'])) {
-        echo ajax_echo(
-            "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр user_id", // Описание ответа
-            true, // Наличие ошибка
-            "ERROR", // Результат ответа
-            null // Дополнительные данные для ответа
-        );
-        exit();
-    }
-    if(!isset($_GET['product_id'])) {
-        echo ajax_echo(
-            "Ошибка!", // Заголовок ответа
-            "Вы не указали GET параметр product_id", // Описание ответа
+            "Вы не указали GET параметр desc", // Описание ответа
             true, // Наличие ошибка
             "ERROR", // Результат ответа
             null // Дополнительные данные для ответа
@@ -540,7 +531,7 @@ else if(preg_match_all("/^(upd_cart)$/ui", $_GET['type'])){
         );
         exit();
     }
-    $query = "UPDATE `cart` SET `user_id` = '". $_GET['user_id'] ."', `product_id` = '". $_GET['product_id'] ."' WHERE `id` = '". $_GET['id'] ."'";
+    $query = "UPDATE `uslugy` SET `name` = '". $_GET['name'] ."', `price` = '". $_GET['price'] ."', `desc` = '". $_GET['desc'] ."' WHERE `id` = '". $_GET['id'] ."'";
     $res_query = mysqli_query($connection, $query);
 
     if(!$res_query){
